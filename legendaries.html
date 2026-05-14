@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Legendary Pokémon</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  min-height:100vh;
+  font-family:'Nunito',sans-serif;
+  background:
+    radial-gradient(circle at top,#7ad0ff 0%,#4ea8de 45%,#2a7cb8 100%);
+  overflow-x:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:30px 15px 60px;
+  color:white;
+}
+
+/* ===== BACKGROUND PATTERN ===== */
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    url("https://www.transparenttextures.com/patterns/cubes.png");
+  opacity:0.08;
+  pointer-events:none;
+}
+
+/* ===== TITLE ===== */
+
+.title-wrap{
+  text-align:center;
+  margin-bottom:28px;
+  animation:floatTitle 3s ease-in-out infinite;
+}
+
+.title-wrap h1{
+  font-size:52px;
+  font-weight:800;
+  text-shadow:0 8px 20px rgba(0,0,0,0.28);
+}
+
+.title-wrap p{
+  margin-top:8px;
+  font-size:16px;
+  opacity:0.9;
+}
+
+@keyframes floatTitle{
+  0%{ transform:translateY(0px); }
+  50%{ transform:translateY(-8px); }
+  100%{ transform:translateY(0px); }
+}
+
+/* ===== TOP BUTTONS ===== */
+
+.top-controls{
+  width:min(1100px,96vw);
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  margin-bottom:22px;
+  flex-wrap:wrap;
+}
+
+.top-btn{
+  padding:14px 22px;
+  border:none;
+  border-radius:16px;
+  background:#e5e7eb;
+  color:#222;
+  font-weight:800;
+  font-size:15px;
+  cursor:pointer;
+  transition:0.25s;
+  box-shadow:0 8px 18px rgba(0,0,0,0.2);
+}
+
+.top-btn:hover{
+  transform:translateY(-4px) scale(1.04);
+  background:#d1d5db;
+  box-shadow:0 14px 28px rgba(0,0,0,0.28);
+}
+
+/* ===== MAIN BOX ===== */
+
+.card-box{
+  width:min(1150px,96vw);
+  background:rgba(255,255,255,0.14);
+  border:1px solid rgba(255,255,255,0.18);
+  backdrop-filter:blur(16px);
+  border-radius:32px;
+  padding:35px 25px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.22);
+}
+
+/* ===== GRID ===== */
+
+.gen-row{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:24px;
+}
+
+/* ===== POKEMON CARD ===== */
+
+.poke-card{
+  background:rgba(255,255,255,0.14);
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:24px;
+  padding:20px 14px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  cursor:pointer;
+  transition:0.25s;
+  position:relative;
+  overflow:hidden;
+}
+
+/* SHINE EFFECT */
+
+.poke-card::before{
+  content:"";
+  position:absolute;
+  inset:-50%;
+  background:linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.24),
+    transparent
+  );
+  transform:rotate(25deg);
+  opacity:0;
+}
+
+.poke-card:hover::before{
+  animation:shine 0.8s linear;
+  opacity:1;
+}
+
+@keyframes shine{
+  from{
+    transform:translateX(-180%) rotate(25deg);
+  }
+  to{
+    transform:translateX(180%) rotate(25deg);
+  }
+}
+
+.poke-card:hover{
+  transform:translateY(-10px) scale(1.05);
+  background:rgba(255,255,255,0.2);
+  box-shadow:0 14px 28px rgba(0,0,0,0.25);
+}
+
+/* ===== IMAGE ===== */
+
+.poke-card img{
+  width:110px;
+  height:110px;
+  object-fit:contain;
+  margin-bottom:12px;
+  transition:0.25s;
+  filter:drop-shadow(0 8px 14px rgba(0,0,0,0.28));
+}
+
+.poke-card:hover img{
+  transform:scale(1.12) rotate(-4deg);
+}
+
+/* ===== TEXT ===== */
+
+.poke-name{
+  font-size:16px;
+  font-weight:800;
+  text-align:center;
+}
+
+.poke-id{
+  margin-top:4px;
+  font-size:13px;
+  opacity:0.82;
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:700px){
+
+  .title-wrap h1{
+    font-size:38px;
+  }
+
+  .poke-card{
+    padding:16px 10px;
+  }
+
+  .poke-card img{
+    width:85px;
+    height:85px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- TITLE -->
+
+<div class="title-wrap">
+  <h1>✨ Legendary Pokémon ✨</h1>
+  <p>The most powerful Pokémon across every generation</p>
+</div>
+
+<!-- BUTTONS -->
+
+<div class="top-controls">
+
+  <button class="top-btn"
+    onclick="location.href='index.html'">
+    ⬅ Back to Starters
+  </button>
+
+</div>
+
+<!-- MAIN BOX -->
+
+<div class="card-box">
+
+  <div class="gen-row" id="legendBox"></div>
+
+</div>
+
+<script>
+
+const legendaries = [
+
+  { name: "Mewtwo", id: 150 },
+  { name: "Mew", id: 151 },
+
+  { name: "Lugia", id: 249 },
+  { name: "Ho-Oh", id: 250 },
+
+  { name: "Kyogre", id: 382 },
+  { name: "Groudon", id: 383 },
+  { name: "Rayquaza", id: 384 },
+
+  { name: "Dialga", id: 483 },
+  { name: "Palkia", id: 484 },
+  { name: "Giratina", id: 487 },
+
+  { name: "Reshiram", id: 643 },
+  { name: "Zekrom", id: 644 },
+  { name: "Kyurem", id: 646 },
+
+  { name: "Xerneas", id: 716 },
+  { name: "Yveltal", id: 717 },
+  { name: "Zygarde", id: 718 },
+
+  { name: "Solgaleo", id: 791 },
+  { name: "Lunala", id: 792 },
+  { name: "Necrozma", id: 800 },
+
+  { name: "Zacian", id: 888 },
+  { name: "Zamazenta", id: 889 },
+  { name: "Eternatus", id: 890 }
+
+];
+
+const box = document.getElementById("legendBox");
+
+legendaries.forEach(p => {
+
+  const card = document.createElement("div");
+  card.className = "poke-card";
+
+  card.innerHTML = `
+  
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.id}.png">
+
+    <div class="poke-name">${p.name}</div>
+
+    <div class="poke-id">#${p.id}</div>
+
+  `;
+
+  card.onclick = () => {
+    window.location.href = `pokemon.html?id=${p.id}`;
+  };
+
+  box.appendChild(card);
+
+});
+
+</script>
+
+</body>
+</html>
