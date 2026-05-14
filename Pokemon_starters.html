@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Pokémon Starter Collection</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  min-height:100vh;
+  font-family:'Nunito',sans-serif;
+  background:
+    radial-gradient(circle at top,#7ad0ff 0%,#4ea8de 45%,#2a7cb8 100%);
+  overflow-x:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:30px 15px 60px;
+  color:white;
+}
+
+/* ===== BACKGROUND EFFECT ===== */
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    url("https://www.transparenttextures.com/patterns/cubes.png");
+  opacity:0.08;
+  pointer-events:none;
+}
+
+/* ===== LOGO ===== */
+
+.logo-wrap{
+  margin-bottom:20px;
+  animation:floatLogo 3s ease-in-out infinite;
+  filter:drop-shadow(0 10px 25px rgba(0,0,0,0.3));
+}
+
+.logo-wrap img{
+  width:min(340px,80vw);
+}
+
+@keyframes floatLogo{
+  0%{ transform:translateY(0px); }
+  50%{ transform:translateY(-8px); }
+  100%{ transform:translateY(0px); }
+}
+
+/* ===== TOP BAR ===== */
+
+.top-controls{
+  width:min(1100px,96vw);
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-bottom:20px;
+}
+
+/* ===== BUTTON ===== */
+
+.legend-btn{
+  padding:14px 22px;
+  border:none;
+  border-radius:16px;
+  background:#e5e7eb;
+  color:#222;
+  font-weight:800;
+  font-size:15px;
+  cursor:pointer;
+  transition:0.25s;
+  box-shadow:0 8px 18px rgba(0,0,0,0.2);
+}
+
+.legend-btn:hover{
+  transform:translateY(-4px) scale(1.04);
+  background:#d1d5db;
+  box-shadow:0 14px 28px rgba(0,0,0,0.28);
+}
+/* ===== SEARCH ===== */
+
+.search-wrap{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:18px;
+  padding:10px;
+  min-width:280px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.15);
+}
+
+.search-wrap input{
+  flex:1;
+  border:none;
+  outline:none;
+  background:rgba(255,255,255,0.15);
+  color:white;
+  padding:14px 16px;
+  border-radius:14px;
+  font-size:15px;
+}
+
+.search-wrap input::placeholder{
+  color:rgba(255,255,255,0.75);
+}
+
+.search-wrap button{
+  width:48px;
+  height:48px;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  font-size:24px;
+  background:white;
+  color:#333;
+  transition:0.2s;
+}
+
+.search-wrap button:hover{
+  transform:scale(1.08);
+  background:#ffe066;
+}
+
+/* ===== MAIN CARD BOX ===== */
+
+.card-box{
+  width:min(1100px,96vw);
+  background:rgba(255,255,255,0.14);
+  border:1px solid rgba(255,255,255,0.18);
+  backdrop-filter:blur(16px);
+  border-radius:32px;
+  padding:35px 25px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.22);
+}
+
+/* ===== GENERATION ===== */
+
+.gen-section{
+  margin-bottom:45px;
+}
+
+.gen-title{
+  font-size:28px;
+  font-weight:800;
+  margin-bottom:20px;
+  text-align:center;
+  text-shadow:0 4px 10px rgba(0,0,0,0.25);
+}
+
+.gen-row{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:22px;
+}
+
+/* ===== POKEMON CARD ===== */
+
+.poke-card{
+  background:rgba(255,255,255,0.14);
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:24px;
+  padding:18px 12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  cursor:pointer;
+  transition:0.25s;
+  position:relative;
+  overflow:hidden;
+}
+
+.poke-card::before{
+  content:"";
+  position:absolute;
+  inset:-50%;
+  background:linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.22),
+    transparent
+  );
+  transform:rotate(25deg);
+  transition:0.5s;
+  opacity:0;
+}
+
+.poke-card:hover::before{
+  animation:shine 0.8s linear;
+  opacity:1;
+}
+
+@keyframes shine{
+  from{ transform:translateX(-180%) rotate(25deg); }
+  to{ transform:translateX(180%) rotate(25deg); }
+}
+
+.poke-card:hover{
+  transform:translateY(-10px) scale(1.05);
+  background:rgba(255,255,255,0.2);
+  box-shadow:0 14px 28px rgba(0,0,0,0.25);
+}
+
+.poke-card img{
+  width:95px;
+  height:95px;
+  object-fit:contain;
+  margin-bottom:10px;
+  transition:0.25s;
+  filter:drop-shadow(0 6px 12px rgba(0,0,0,0.25));
+}
+
+.poke-card:hover img{
+  transform:scale(1.12) rotate(-4deg);
+}
+
+.poke-name{
+  font-size:15px;
+  font-weight:800;
+  text-align:center;
+}
+
+.poke-id{
+  font-size:12px;
+  opacity:0.8;
+  margin-top:3px;
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:700px){
+
+  .gen-title{
+    font-size:22px;
+  }
+
+  .poke-card{
+    padding:14px 10px;
+  }
+
+  .poke-card img{
+    width:78px;
+    height:78px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- LOGO -->
+
+<div class="logo-wrap">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/1200px-International_Pok%C3%A9mon_logo.svg.png">
+</div>
+
+<!-- TOP CONTROLS -->
+
+<div class="top-controls">
+
+  <button class="legend-btn"
+    onclick="location.href='legendaries.html'">
+    ✨ View Legendary Pokémon
+  </button>
+
+  <div class="search-wrap">
+    <input
+      id="poke-search"
+      type="search"
+      placeholder="Search Pokémon..."
+    >
+
+    <button id="search-clear">×</button>
+  </div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="card-box" id="main-box"></div>
+
+<script>
+
+const gens = [
+
+  {
+    label: "Generation I — Kanto",
+    starters: [
+      { name: "Bulbasaur", id: 1 },
+      { name: "Charmander", id: 4 },
+      { name: "Squirtle", id: 7 }
+    ]
+  },
+
+  {
+    label: "Generation II — Johto",
+    starters: [
+      { name: "Chikorita", id: 152 },
+      { name: "Cyndaquil", id: 155 },
+      { name: "Totodile", id: 158 }
+    ]
+  },
+
+  {
+    label: "Generation III — Hoenn",
+    starters: [
+      { name: "Treecko", id: 252 },
+      { name: "Torchic", id: 255 },
+      { name: "Mudkip", id: 258 }
+    ]
+  },
+
+  {
+    label: "Generation IV — Sinnoh",
+    starters: [
+      { name: "Turtwig", id: 387 },
+      { name: "Chimchar", id: 390 },
+      { name: "Piplup", id: 393 }
+    ]
+  },
+
+  {
+    label: "Generation V — Unova",
+    starters: [
+      { name: "Snivy", id: 495 },
+      { name: "Tepig", id: 498 },
+      { name: "Oshawott", id: 501 }
+    ]
+  },
+
+  {
+    label: "Generation VI — Kalos",
+    starters: [
+      { name: "Chespin", id: 650 },
+      { name: "Fennekin", id: 653 },
+      { name: "Froakie", id: 656 }
+    ]
+  },
+
+  {
+    label: "Generation VII — Alola",
+    starters: [
+      { name: "Rowlet", id: 722 },
+      { name: "Litten", id: 725 },
+      { name: "Popplio", id: 728 }
+    ]
+  },
+
+  {
+    label: "Generation VIII — Galar",
+    starters: [
+      { name: "Grookey", id: 810 },
+      { name: "Scorbunny", id: 813 },
+      { name: "Sobble", id: 816 }
+    ]
+  },
+
+  {
+    label: "Generation IX — Paldea",
+    starters: [
+      { name: "Sprigatito", id: 906 },
+      { name: "Fuecoco", id: 909 },
+      { name: "Quaxly", id: 912 }
+    ]
+  }
+
+];
+
+const box = document.getElementById("main-box");
+const searchInput = document.getElementById("poke-search");
+const clearBtn = document.getElementById("search-clear");
+
+const cards = [];
+
+gens.forEach(gen => {
+
+  const section = document.createElement("div");
+  section.className = "gen-section";
+
+  const title = document.createElement("div");
+  title.className = "gen-title";
+  title.textContent = gen.label;
+
+  const row = document.createElement("div");
+  row.className = "gen-row";
+
+  gen.starters.forEach(p => {
+
+    const card = document.createElement("div");
+    card.className = "poke-card";
+
+    card.dataset.name = p.name.toLowerCase();
+
+    card.innerHTML = `
+      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.id}.png">
+
+      <div class="poke-name">${p.name}</div>
+
+      <div class="poke-id">#${p.id}</div>
+    `;
+
+    card.onclick = () => {
+      window.location.href = `pokemon.html?id=${p.id}`;
+    };
+
+    cards.push(card);
+    row.appendChild(card);
+
+  });
+
+  section.appendChild(title);
+  section.appendChild(row);
+
+  box.appendChild(section);
+
+});
+
+/* SEARCH */
+
+function updateSearch(){
+
+  const q = searchInput.value.toLowerCase();
+
+  cards.forEach(card => {
+
+    card.style.display =
+      card.dataset.name.includes(q)
+      ? "flex"
+      : "none";
+
+  });
+
+}
+
+searchInput.addEventListener("input", updateSearch);
+
+clearBtn.onclick = () => {
+
+  searchInput.value = "";
+  updateSearch();
+
+};
+
+</script>
+
+</body>
+</html>
