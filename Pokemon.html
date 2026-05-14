@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pokémon Details</title>
+<style>
+body {
+  font-family: Arial;
+  background: #5ab4e8;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: auto auto;
+  gap: 15px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+/* Boxes */
+.box {
+  background: rgba(0,0,0,0.25);
+  border-radius: 15px;
+  padding: 15px;
+}
+
+/* Layout areas */
+.evo { grid-column: 1; grid-row: 1; }
+.info { grid-column: 2; grid-row: 1; }
+.abilities { grid-column: 1 / span 2; grid-row: 2; }
+
+img {
+  width: 150px;
+}
+
+h2 {
+  margin: 10px 0;
+}
+
+.ability {
+  background: rgba(255,255,255,0.2);
+  margin: 5px;
+  padding: 8px;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="name">Loading...</h1>
+
+<div class="container">
+
+  <div class="box evo">
+    <h3>Evolution Chain</h3>
+    <div id="evo"></div>
+  </div>
+
+  <div class="box info">
+    <h3>Pokémon Info</h3>
+    <img id="img">
+    <p id="details"></p>
+  </div>
+
+  <div class="box abilities">
+    <h3>First 4 Abilities</h3>
+    <div id="abilities"></div>
+  </div>
+
+</div>
+
+<script>
+const id = new URLSearchParams(window.location.search).get("id");
+
+async function loadPokemon() {
+
+  // main pokemon data
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+  const data = await res.json();
+
+  document.getElementById("name").innerText = data.name.toUpperCase();
+  document.getElementById("img").src = data.sprites.other["official-artwork"].front_default;
+
+  // abilities (first 4)
+  const abilityBox = document.getElementById("abilities");
+  data.abilities.slice(0,4).forEach(a => {
+    const div = document.createElement("div");
+    div.className = "ability";
+    div.innerText = a.ability.name;
+    abilityBox.appendChild(div);
+  });
+
+  // info
+  document.getElementById("details").innerHTML = `
+    Height: ${data.height}<br>
+    Weight: ${data.weight}<br>
+    Type: ${data.types.map(t => t.type.name).join(", ")}
+  `;
+
+
+
+ // evolution chain
+const species = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+const speciesData = await species.json();
+
+const evoRes = await fetch(speciesData.evolution_chain.url);
+const evoData = await evoRes.json();
+
+const evoBox = document.getElementById("evo");
+
+let chain = evoData.chain;
+
+let stage1 = chain.species.name;
+let stage2 = chain.evolves_to[0]?.species.name;
+let stage3 = chain.evolves_to[0]?.evolves_to[0]?.species.name;
+
+async function getImage(name) {
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+  const data = await res.json();
+  return data.sprites.other["official-artwork"].front_default;
+}
+
+async function renderEvo() {
+  evoBox.innerHTML = ""; // IMPORTANT: clear box first
+
+  // Stage 1
+  const img1 = await getImage(stage1);
+  evoBox.innerHTML += `
+    <div>
+      <img src="${img1}" width="100"><br>
+      ${stage1}
+    </div>
+  `;
+
+  // Stage 2
+  if (stage2) {
+    const img2 = await getImage(stage2);
+    evoBox.innerHTML += `
+      ➜
+      <div>
+        <img src="${img2}" width="100"><br>
+        ${stage2}
+      </div>
+    `;
+  }
+
+  // Stage 3
+  if (stage3) {
+    const img3 = await getImage(stage3);
+    evoBox.innerHTML += `
+      ➜
+      <div>
+        <img src="${img3}" width="100"><br>
+        ${stage3}
+      </div>
+    `;
+  }
+}
+
+renderEvo();
+}
+
+loadPokemon();
+</script>
+
+</body>
+</html>
